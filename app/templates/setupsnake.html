@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .image {
+      float: right;
+  }
+</style>
+
+<h1>Interp Strip Setup</h1>
+<script>
+  window.addEventListener('load', function(){
+      if (localStorage.pick) {
+          var sel = document.querySelector('#strip-selector');
+          sel.value = localStorage.pick;
+      }
+  });
+  
+  function getSelectValue(){
+      var sel = document.querySelector('#strip-selector');
+      localStorage.pick = sel.value;
+      location.replace('/setup/' + localStorage.pick);
+  }
+</script>
+    <label for="strip-selector">Select a Strip:</label>
+	<select id="strip-selector" onchange = "getSelectValue();">
+	  {% for i in range(1,configure.num_strips+1) %}
+	  <option value="{{i}}">{{i}}</option>
+	  {% endfor %}
+	</select>
+	<div class="image">
+	  <img src="{{url_for('static', filename='display.png')}}" align="middle" width="672" height="378"/>
+	  <hr/>
+	  <a href="{{ url_for('running') }}">Run Program</a>
+	</div>
+	<form action="" id="strip-selector" method="post" novalidate>
+        {{ form.hidden_tag() }}
+	<p>
+            {{ form.strip_num.label }}<br>
+            {{ form.strip_num(size=3) }}
+	    {% for error in form.strip_num.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+	<p>
+            {{ form.strip_segments.label }}<br>
+            {{ form.strip_segments(size=3) }}
+	    {% for error in form.strip_segments.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.start_pos_x.label }}<br>
+            {{ form.start_pos_x(size=4) }}
+	    {% for error in form.start_pos_x.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.start_pos_y.label }}<br>
+            {{ form.start_pos_y(size=4) }}
+	    {% for error in form.start_pos_y.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.line_color_r.label }}<br>
+            {{ form.line_color_r(size=3) }}
+	    {% for error in form.line_color_r.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.line_color_g.label }}<br>
+            {{ form.line_color_g(size=3) }}
+	    {% for error in form.line_color_g.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.line_color_b.label }}<br>
+            {{ form.line_color_b(size=3) }}
+	    {% for error in form.line_color_b.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.ip.label }}<br>
+            {{ form.ip(size=13) }}
+	    {% for error in form.ip.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+	</form>
+        {% endblock %}
