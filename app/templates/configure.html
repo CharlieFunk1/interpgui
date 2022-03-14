@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Interp Config</h1>
+      <form action="" method="post" novalidate>
+        {{ form1.hidden_tag() }}
+        <p>
+            {{ form1.num_strips.label }}<br>
+            {{ form1.num_strips(size=3) }}
+	    {% for error in form1.num_strips.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form1.rust_path.label }}<br>
+            {{ form1.rust_path(size=64) }}
+	    {% for error in form1.rust_path.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+	<p>
+            {{ form1.brightness.label }}<br>
+            {{ form1.brightness(size=3) }}
+	    {% for error in form1.brightness.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>{{ form1.submit() }}</p>
+      </form>
+      
+{% endblock %}

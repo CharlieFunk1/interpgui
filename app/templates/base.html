@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Interp</title>
+    </head>
+    <body>
+        <div>
+            Interp:
+            <a href="{{ url_for('slash') }}">Interp Strip Setup</a>
+            <a href="{{ url_for('config') }}">Interp Config</a>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
