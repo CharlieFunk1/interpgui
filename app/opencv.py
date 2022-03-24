@@ -3,6 +3,8 @@ import math
 from app import db
 from app.models import Strip, Configure
 
+next_start = (0, 0)
+
 def opencv_draw(strips):
     image = cv2.imread('./app/static/resolutions.png')
     for strip in strips:
@@ -21,6 +23,9 @@ def set_strip(strip):
     i = 1
     k = 1
     j = 1
+    if strip.link_to_last == True:
+        x_start, y_start = next_start
+        
     x_start = strip.start_pos_x
     y_start = strip.start_pos_y
     strip_xy.append((x_start, y_start))
@@ -31,6 +36,8 @@ def set_strip(strip):
             strip_xy.append((x, y))
             j += 1
         if i == strip.zig_zags:
+            if strip.link_to_last == True:
+                next_start = (x, y)
             break
         k = k * -1
         x_start = round(((strip.zag_distance) * math.cos(math.radians((strip.angle * -1) - (-90)))) + (strip_xy[((j * i) - 1)][0]))

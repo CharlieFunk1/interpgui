@@ -15,11 +15,19 @@
           sel.value = localStorage.pick;
       }
   });
+  window.addEventListener('load', function(){
+      if (localStorage.pick2) {
+	  var sel2 = document.querySelector('#link-selector');
+	  sel2.value = localStorage.pick2;
+      }
+  });
   
   function getSelectValue(){
       var sel = document.querySelector('#strip-selector');
+      var sel2 =document.querySelector('#link-selector');
       localStorage.pick = sel.value;
-      location.replace('/setup/' + localStorage.pick);
+      localStorage.pick2 = sel2.value;
+      location.replace('/setup/' + localStorage.pick + ',' + localStorage.pick2 + ',' + links_in_strip);
   }
 </script>
     <label for="strip-selector">Select a Strip:</label>
@@ -28,17 +36,39 @@
 	  <option value="{{i}}">{{i}}</option>
 	  {% endfor %}
 	</select>
+	<br>
+    <label for="link-selector">Select Link Number:</label>
+	<select id="link-selector" onchange = "getSelectValue();">
+	  {% for j in range(1,links_in_strip+1) %}
+	  <option value="{{j}}">{{j}}</option>
+	  {% endfor %}
+	</select>
 	<div class="image">
 	  <img src="{{url_for('static', filename='display.png')}}" align="middle" width="672" height="378"/>
 	  <hr/>
 	  <a href="{{ url_for('running') }}">Run Program</a>
 	</div>
-	<form action="" id="strip-selector" method="post" novalidate>
+	<form action="" id="strip-form" method="post" onchange = "getSelectedValue();"novalidate>
         {{ form.hidden_tag() }}
 	<p>
             {{ form.strip_num.label }}<br>
             {{ form.strip_num(size=3) }}
 	    {% for error in form.strip_num.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.link_to_last() }} {{ form.link_to_last.label }}</p>
+	<p>
+            {{ form.links_in_strip.label }}<br>
+            {{ form.links_in_strip(size=4) }}
+	    {% for error in form.links_in_strip.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.link_num.label }}<br>
+            {{ form.link_num(size=4) }}
+	    {% for error in form.link_num.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>

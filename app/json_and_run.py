@@ -20,7 +20,10 @@ def write_json(rust_path):
             "line_color" : (strip.line_color_r, strip.line_color_g, strip.line_color_b),
             "zig_zags" : strip.zig_zags,
             "zag_distance" : strip.zag_distance,
-            "ip" : strip.ip
+            "ip" : strip.ip,
+            "link_to_last" : strip.link_to_last,
+            "links_in_strip" : strip.links_in_strip,
+            "link_num" : strip.link_num
         }
         diclist.append(dictionary)
         i += 1
