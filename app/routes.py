@@ -5,7 +5,7 @@
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
 from app import db
-from app.forms import StripForm, ConfigForm, LinkForm, StripConfigureForm
+from app.forms import StripForm, ConfigForm, LinkForm, StripConfigureForm, StripConfigureMainForm
 from app.models import Strip, Configure, Link, StripConfigure
 from app.opencv import opencv_draw
 from app.json_and_run import write_json, run_program
@@ -149,7 +149,20 @@ def setup2(strip_number,link_number,links_in_the_strip):
 @app.route('/config', methods=['GET', 'POST'])
 def config():
     form1 = ConfigForm()
-    
+    config = Configure.query.get(1)
+    try:
+        num_strips = config.num_strips
+    except:
+        print("No data in Configure")
+        
+    try:
+        if str(num_strips).isdigit() == True:
+            print("Data present in Configure")
+            return redirect(url_for('config_strips'))
+        
+    except:
+        print("No data present in config")
+
     if form1.validate_on_submit():
         configure = Configure(num_strips = form1.num_strips.data,
                               rust_path = form1.rust_path.data,
@@ -160,21 +173,13 @@ def config():
             form1.num_strips.data))
         return redirect(url_for('config_strips'))
     
-    try:
-        configure = Configure.query.all()
-        num_strips = configure.num_strips.data
-        print("Data present in Configure")
-        return redirect(url_for('config_strips'))
-    
-    except:
-        print("No data present in config")
-        
     return render_template('configure.html', title='Interp Config', form1=form1)
 
 @app.route('/config/strips', methods=['GET', 'POST'])
 def config_strips():
     form1 = ConfigForm()
-    form2 = StripConfigureForm()
+    form2 = StripConfigureMainForm()
+    template_form = StripConfigureForm(prefix='stripconfigs-_-')
     strip_configure = StripConfigure.query.all()
     config = Configure.query.get(1)
     configure = Configure.query.all()
@@ -199,8 +204,21 @@ def config_strips():
             form1.brightness.data = config.brightness
     except:
         print("No data present in config")
-    
+        return redirect(url_for('config'))
+
     if form2.validate_on_submit():
+        new_strip_config_main = StripConfigureMain()
+
+        db.session.add(new_strip_config)
+
+        for strip in form.stripconfigs.data:
+            new_strip_config = StripConfigure(**strip)
+
+            new_strip_config_main.stripconfigs.append(new_strip_config)
+
+        db.session.commit()
+
+    
         try:
             for i in range(1, num_strips+1):
                 try:
@@ -211,7 +229,8 @@ def config_strips():
                     stripconfigure = StripConfigure(strip_num = i,
                                                     strip_type = form2.strip_type.data)
                 db.session.add(stripconfigure)
-                db.session.commit()
+
+            db.session.commit()
 
         except:
             print("could not write form2 to StripConfigure")

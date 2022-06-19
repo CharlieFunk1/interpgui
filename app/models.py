@@ -1,5 +1,6 @@
 from app import db
 
+
 class Strip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     strip_num = db.Column(db.Integer, index=True)
@@ -39,10 +40,18 @@ class Configure(db.Model):
     num_strips = db.Column(db.Integer, index=True)
     rust_path = db.Column(db.String(64))
     brightness = db.Column(db.Integer)
+
+class StripConfigureMain(db.Model):
+    __tablename__ = 'configmain'
+    id = db.Column(db.Integer, primary_key=True)
     
 class StripConfigure(db.Model):
+    __tablename__ = 'stripconfigs'
     id = db.Column(db.Integer, primary_key=True)
+    strip_configure_main_id = db.Column(db.Integer, db.ForeignKey('configmain.id'))
     strip_num = db.Column(db.Integer, index=True)
     strip_type = db.Column(db.String(10))
     links_in_strip = db.Column(db.Integer)
+    stripconfiguremain = db.relationship('StripConfigureMain', backref=db.backref('stripconfigs', lazy='dynamic', collection_class=list))
+    
     

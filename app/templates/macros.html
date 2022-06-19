@@ -1,0 +1,17 @@
+{%- macro render_stripconfigure_form(subform, index) %}
+    <div id="stripconfigure-{{ index }}-form" class="{% if index != '_' %}subform{% else %}is-hidden{% endif %}" data-index="{{ index }}">
+         Strip: {{ index }}
+	  {{ subform.strip_type.label }}
+          {{ subform.strip_type }}
+	  {% if subform.strip_type == 'link' %}
+	    {{ subform.links_in_strip.label }}
+            {{ subform.links_in_strip(size=3) }}
+	  {% endif %}
+	  {% for error in subform.strip_type.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+
+        <a class="remove" href="#">Remove</a>
+        <hr/>
+    </div>
+{%- endmacro %}

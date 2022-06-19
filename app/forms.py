@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, IntegerField, SubmitField, BooleanField, SelectField, FieldList, Form, FormField
 from wtforms.validators import DataRequired, NumberRange, IPAddress, AnyOf, InputRequired
-from app.models import Strip, Configure
+from app.models import Strip, Configure, Link, StripConfigure, StripConfigureMain
 
-
+    
 class StripForm(FlaskForm):
     strip_num = IntegerField('Strip Number', validators=[DataRequired(), NumberRange(min=1, max=None, message='There is no strip 0.  Must start with 1.')])
     num_pixels = IntegerField('Number of LEDs in Strip', validators=[DataRequired(), NumberRange(min=1, max=300, message="Must be 1-300")])
@@ -38,14 +38,15 @@ class ConfigForm(FlaskForm):
     brightness = IntegerField('Global Brightness Control', validators=[DataRequired()])
     submit = SubmitField('Submit Values')
     
-    
-class StripConfigureForm(FlaskForm):
+
+class StripConfigureForm(Form):
     strip_num = IntegerField('Strip Number', validators=[DataRequired(), NumberRange(min=1, max=None, message='There is no strip 0.  Must start with 1.')])
     strip_type = SelectField('Type of Strip', choices=[('line', 'Line'), ('zig_zag', 'Zig-Zag'), ('link', 'Link')], validators=[DataRequired()])
     links_in_strip = IntegerField('Total number of links in this strip', validators=[InputRequired()])
     submit = SubmitField('Submit Values')
     
-
+class StripConfigureMainForm(FlaskForm):
+    strips = FieldList(FormField(StripConfigureForm), min_entries=1)
 
 
 
