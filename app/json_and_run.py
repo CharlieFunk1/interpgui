@@ -30,5 +30,6 @@ def write_json(rust_path):
 
 def run_program(rust_path):
     #os.system(rust_path + "cargo" + " run")
-    Popen([rust_path + "target/debug/interprust"])
+    rustP = subprocess.Popen([rust_path + "target/debug/interprust"])
     #subprocess.run([rust_path, "cargo", " run"])
+    return rustP

@@ -2,6 +2,8 @@
 #finish run from shell script to start program
 #changed paths to absolute in json and opencv modules in rust.  change back maybe?
 
+rustP = 0
+
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
 from app import db
