@@ -10,7 +10,11 @@ from app import db
 from app.forms import StripForm, ConfigForm
 from app.models import Strip, Configure
 from app.opencv import opencv_draw
-from app.json_and_run import write_json, run_program
+from app.json_rw import write_json
+import subprocess
+from subprocess import Popen
+import os
+
 
 @app.route('/', methods=['GET', 'POST'])
 def slash():
@@ -24,7 +28,9 @@ def slash():
         print("No data in table.  Adding basic setup info")
         configure = Configure(num_strips = 1,
                               rust_path = "/",
-                              brightness = 100)
+                              brightness = 100,
+                              mode = 1,
+                              video_stream_ip = "0.0.0.0")
         db.session.add(configure)
         db.session.commit()
 
@@ -128,7 +134,9 @@ def config():
             db.session.commit()
             configure = Configure(num_strips = form1.num_strips.data,
                                   rust_path = form1.rust_path.data,
-                                  brightness = form1.brightness.data)
+                                  brightness = form1.brightness.data,
+                                  mode = form1.mode.data,
+                                  video_stream_ip = form1.video_stream_ip.data)
             db.session.add(configure)
             db.session.commit()
             flash('Config Data Submitted.  Set {} strips'.format(
@@ -139,6 +147,8 @@ def config():
             form1.num_strips.data = config.num_strips
             form1.rust_path.data = config.rust_path
             form1.brightness.data = config.brightness
+            form1.mode.data = config.mode
+            form1.video_stream_ip.data = config.video_stream_ip
     except:
         print("No data present in config")
         
@@ -149,6 +159,15 @@ def config():
 def running():
     configure = Configure.query.get(1)
     rust_path = configure.rust_path
+    path = rust_path + "target/debug/interprust"
     write_json(rust_path)
-    run_program(rust_path)
+    proc = subprocess.Popen(path, shell=True)
+        
+    if request.method == 'POST':
+        if request.form.get("close_program"):
+            done = os.system("killall interprust")
+            return redirect('/setup/1')
+      
     return render_template('running.html', title='running')
+
+    

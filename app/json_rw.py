@@ -11,7 +11,7 @@ def write_json(rust_path):
     i = 1
     while i <= configure.num_strips:
         strip = Strip.query.filter_by(strip_num=i).first()
-        dictionary ={
+        strip_dictionary ={
             "strip_num" : strip.strip_num,
             "num_pixels" : strip.num_pixels,
             "start_pos" : (strip.start_pos_x, strip.start_pos_y),
@@ -22,14 +22,20 @@ def write_json(rust_path):
             "zag_distance" : strip.zag_distance,
             "ip" : strip.ip
         }
-        diclist.append(dictionary)
+        diclist.append(strip_dictionary)
         i += 1
-    json_object = json.dumps(diclist, indent = 4)
+    
+    config_dictionary ={
+        "num_strips" : configure.num_strips,
+        "rust_path" : configure.rust_path,
+        "brightness" : configure.brightness,
+        "mode" : configure.mode,
+        "video_stream_ip" : configure.video_stream_ip
+    }
+    config_json_object = json.dumps(config_dictionary, indent = 4)
+    strip_json_object = json.dumps(diclist, indent = 4)
     with open(rust_path + "stripdata.json", "w") as outfile:
-        outfile.write(json_object)
+        outfile.write(strip_json_object)
+    with open(rust_path + "configdata.json", "w") as outfile:
+        outfile.write(config_json_object)
 
-def run_program(rust_path):
-    #os.system(rust_path + "cargo" + " run")
-    rustP = subprocess.Popen([rust_path + "target/debug/interprust"])
-    #subprocess.run([rust_path, "cargo", " run"])
-    return rustP

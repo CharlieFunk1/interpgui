@@ -13,7 +13,10 @@
 	  <img src="{{url_for('static', filename='display.png')}}" align="middle" width="672" height="378"/>
 	</div>
 
-	<div class="buttons">
-	  <a href="/setup/1">Close and Return to Setup</a>
+	<div class="button">
+	  <form method='post' action="/running">
+	    <button type="submit" name="close_program" value="close_program"> Close </button>
+	  </form>
 	</div>
 {% endblock %}
+	

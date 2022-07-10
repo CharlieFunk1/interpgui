@@ -23,5 +23,6 @@ class Configure(db.Model):
     num_strips = db.Column(db.Integer, index=True)
     rust_path = db.Column(db.String(64))
     brightness = db.Column(db.Integer)
-    
+    mode = db.Column(db.Integer)
+    video_stream_ip = db.Column(db.String)
     

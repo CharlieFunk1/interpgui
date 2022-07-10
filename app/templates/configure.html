@@ -25,6 +25,21 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+	<p>
+            {{ form1.mode.label }}<br>
+            {{ form1.mode(size=1) }}
+	    {% for error in form1.mode.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+	<p>
+            {{ form1.video_stream_ip.label }}<br>
+            {{ form1.video_stream_ip(size=15) }}
+	    {% for error in form1.video_stream_ip.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
 
         <p>{{ form1.submit() }}</p>
       </form>

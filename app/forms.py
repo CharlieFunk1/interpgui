@@ -22,7 +22,8 @@ class ConfigForm(FlaskForm):
     num_strips = IntegerField('Number of Strips', validators=[DataRequired(), NumberRange(min=1, max=None, message="Can not have 0 strips")])
     rust_path = StringField('Path to Program (/home/path/to/rust/program/)', validators=[DataRequired()])
     brightness = IntegerField('Global Brightness Control', validators=[DataRequired()])
+    mode = IntegerField('Mode: 1)Video 2)Camera time sub 3)Camera static sub 4)IP', validators=[NumberRange(min=1, max=4, message="Must be 1, 2, 3, or 4")])
+    video_stream_ip = StringField('IP address of streaming video', validators=[IPAddress(message="Value needs to be a valid IP Address")])
     submit = SubmitField('Submit Values')
-    
     
 

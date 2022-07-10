@@ -1,8 +1,8 @@
-"""reboot
+"""first commit
 
-Revision ID: c59a9e4c13aa
+Revision ID: 67603b1e8c51
 Revises: 
-Create Date: 2022-03-11 11:18:59.127792
+Create Date: 2022-07-09 14:06:31.170781
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c59a9e4c13aa'
+revision = '67603b1e8c51'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,6 +23,8 @@ def upgrade():
     sa.Column('num_strips', sa.Integer(), nullable=True),
     sa.Column('rust_path', sa.String(length=64), nullable=True),
     sa.Column('brightness', sa.Integer(), nullable=True),
+    sa.Column('mode', sa.Integer(), nullable=True),
+    sa.Column('video_stream_ip', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_configure_num_strips'), 'configure', ['num_strips'], unique=False)
