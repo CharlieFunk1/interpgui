@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .list{
+      Height : 400px;
+      Overflow-y : scroll;
+  }
+</style>
+
+<h1>Interp Strip Save Project</h1>
+<script>
+  window.addEventListener('load', function(){
+      if (localStorage.pick) {
+          var sel = document.querySelector('#strip-selector');
+          sel.value = localStorage.pick;
+      }
+  });
+  
+  function getSelectValue(){
+      var sel = document.querySelector('#strip-selector');
+      localStorage.pick = sel.value;
+      location.replace('/setup/' + localStorage.pick);
+  }
+</script>
+      <form action="" id="strip-selector" method="post" novalidate>
+          {{ form.hidden_tag() }}
+	<p>
+            {{ form.save_file.label }}<br>
+            {{ form.save_file(size=20) }}
+	    {% for error in form.save_file.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+          <p>{{ form.submit() }}</p>
+      </form>
+      
+      <ul class='list'>
+	{% for save in saves %}
+	<li>{{save}}</li>
+	{% endfor %}
+      </ul>	
+      {% endblock %}

@@ -5,7 +5,7 @@ from subprocess import Popen
 from app import db
 from app.models import Strip, Configure
 
-def write_json(rust_path):
+def write_json(path):
     configure = Configure.query.get(1)
     diclist = []
     i = 1
@@ -34,8 +34,55 @@ def write_json(rust_path):
     }
     config_json_object = json.dumps(config_dictionary, indent = 4)
     strip_json_object = json.dumps(diclist, indent = 4)
-    with open(rust_path + "stripdata.json", "w") as outfile:
+    with open(path + "stripdata.json", "w") as outfile:
         outfile.write(strip_json_object)
-    with open(rust_path + "configdata.json", "w") as outfile:
+    with open(path + "configdata.json", "w") as outfile:
         outfile.write(config_json_object)
 
+
+        
+def read_json(path, config_name):
+    if config_name != None:
+        c = open(path + config_name + "/configdata.json")
+        s = open(path + config_name + "/stripdata.json")
+        configuration = json.load(c)
+        strips = json.load(s)
+        db_strips = Strip.query.all()
+        db_config = Configure.query.all()
+        all_strips = []
+        for strip in strips:
+            all_strips.append(strip)
+            
+        for strip in db_strips:
+            db.session.delete(strip)
+                
+        for config in db_config:
+            db.session.delete(config)
+                    
+        db.session.commit()
+
+        for strip in all_strips:
+            strip_add = Strip(strip_num = strip["strip_num"],
+                              num_pixels = strip["num_pixels"],
+                              start_pos_x = strip["start_pos"][0],
+                              start_pos_y = strip["start_pos"][1],
+                              angle = strip["angle"],
+                              length = strip["length"],
+                              line_color_r = strip["line_color"][0],
+                              line_color_g = strip["line_color"][1],
+                              line_color_b = strip["line_color"][2],
+                              zig_zags = strip["zig_zags"],
+                              zag_distance = strip["zag_distance"],
+                              ip = strip["ip"])
+        
+            db.session.add(strip_add)
+        db.session.commit()
+        config_add = Configure(num_strips = configuration["num_strips"],
+                               rust_path = configuration["rust_path"],
+                               brightness = configuration["brightness"],
+                               mode = configuration["mode"],
+                               video_stream_ip = configuration["video_stream_ip"])
+        db.session.add(config_add)
+        db.session.commit()
+    
+    

@@ -25,5 +25,12 @@ class ConfigForm(FlaskForm):
     mode = IntegerField('Mode: 1)Video 2)Camera time sub 3)Camera static sub 4)IP', validators=[NumberRange(min=1, max=4, message="Must be 1, 2, 3, or 4")])
     video_stream_ip = StringField('IP address of streaming video', validators=[IPAddress(message="Value needs to be a valid IP Address")])
     submit = SubmitField('Submit Values')
-    
 
+class LoadConfig(FlaskForm):
+    load_file = StringField('Name of project to load:')
+    submit = SubmitField('Submit Values')
+
+class SaveConfig(FlaskForm):
+    save_file = StringField('Name of project to save:')
+    submit = SubmitField('Submit Values')
+ 

@@ -1,0 +1,7 @@
+{
+    "num_strips": 3,
+    "rust_path": "/home/charliefunk/rust/interprust/",
+    "brightness": 15,
+    "mode": 1,
+    "video_stream_ip": "192.168.1.124"
+}

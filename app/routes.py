@@ -1,16 +1,11 @@
-#add brightness control to rust.  Already in UI.
-#finish run from shell script to start program
-#changed paths to absolute in json and opencv modules in rust.  change back maybe?
-
-rustP = 0
-
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
 from app import db
-from app.forms import StripForm, ConfigForm
+from app.forms import StripForm, ConfigForm, LoadConfig, SaveConfig
 from app.models import Strip, Configure
 from app.opencv import opencv_draw
-from app.json_rw import write_json
+from app.save_load import save_config, load_config, query_saves
+from app.json_rw import write_json, read_json
 import subprocess
 from subprocess import Popen
 import os
@@ -131,17 +126,17 @@ def config():
     if form1.validate_on_submit():
         for c in configure:
             db.session.delete(c)
-            db.session.commit()
-            configure = Configure(num_strips = form1.num_strips.data,
-                                  rust_path = form1.rust_path.data,
-                                  brightness = form1.brightness.data,
-                                  mode = form1.mode.data,
-                                  video_stream_ip = form1.video_stream_ip.data)
-            db.session.add(configure)
-            db.session.commit()
-            flash('Config Data Submitted.  Set {} strips'.format(
-                form1.num_strips.data))
-            return redirect(url_for('config'))
+        db.session.commit()
+        configure = Configure(num_strips = form1.num_strips.data,
+                              rust_path = form1.rust_path.data,
+                              brightness = form1.brightness.data,
+                              mode = form1.mode.data,
+                              video_stream_ip = form1.video_stream_ip.data)
+        db.session.add(configure)
+        db.session.commit()
+        flash('Config Data Submitted.  Set {} strips'.format(
+            form1.num_strips.data))
+        return redirect(url_for('config'))
     try:
         if str(num_strips).isdigit() == True:
             form1.num_strips.data = config.num_strips
@@ -170,4 +165,25 @@ def running():
       
     return render_template('running.html', title='running')
 
+@app.route('/load', methods=['GET', 'POST'])
+def load():
+    form1 = LoadConfig()
+    saves = query_saves()
+
+    if form1.validate_on_submit():
+        load_config(form1.load_file.data)
+        return redirect('/setup/1')
     
+    return render_template('load.html', title='load', saves=saves, form1=form1)
+
+@app.route('/save', methods=['GET', 'POST'])
+def save():
+    form = SaveConfig()
+    saves = query_saves()
+
+    if form.validate_on_submit():
+        save_config(form.save_file.data)
+        return redirect('/setup/1')
+    
+    return render_template('save.html', title='save', saves=saves, form=form)
+

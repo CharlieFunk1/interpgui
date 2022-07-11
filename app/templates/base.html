@@ -7,7 +7,11 @@
             Interp:
             <a href="{{ url_for('slash') }}">Interp Strip Setup</a>
             <a href="{{ url_for('config') }}">Interp Config</a>
-        </div>
+	</div>
+	<div class="loadsave" align="right">
+            <a href="{{ url_for('load') }}">Load</a>
+            <a href="{{ url_for('save') }}">Save</a>
+	</div>
         <hr>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
