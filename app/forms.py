@@ -14,7 +14,7 @@ class StripForm(FlaskForm):
     line_color_g = IntegerField('Strip Color Green (0-255)', validators=[NumberRange(min=0, max=255, message="Value needs to be 0-255")])
     line_color_b = IntegerField('Strip Color Blue (0-255)', validators=[NumberRange(min=0, max=255, message="Value needs to be 0-255")])
     zig_zags = IntegerField('Number of Zig Zags (1 = None)', validators=[DataRequired()])
-    zag_distance = IntegerField('Distance between Zig Zag lines (in Pixels)', validators=[DataRequired()])
+    zag_distance = IntegerField('Distance between Zig Zag lines (in Pixels)(Negative to Zag Other Direction)', validators=[DataRequired()])
     ip = StringField('IP address of Strip', validators=[IPAddress(message="Value needs to be a valid IP Address")])
     submit = SubmitField('Submit Values')
     

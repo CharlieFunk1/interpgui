@@ -4,7 +4,7 @@ from app import db
 from app.models import Strip, Configure
 
 def opencv_draw(strips):
-    image = cv2.imread('./app/static/resolutions.png')
+    image = cv2.imread('./app/static/images/resolutions.png')
     for strip in strips:
         i = 0
         strip_xy = set_strip(strip)
@@ -13,7 +13,7 @@ def opencv_draw(strips):
             end = (strip_xy[i][0], strip_xy[i][1])
             cv2.line(image, start, end, (strip.line_color_b, strip.line_color_g, strip.line_color_r), 5)
             i += 1
-    cv2.imwrite('./app/static/display.png', image)        
+    cv2.imwrite('./app/static/images/display.png', image)        
 
 
 def set_strip(strip):

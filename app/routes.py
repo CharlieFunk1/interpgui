@@ -1,6 +1,11 @@
+#TODO Make brightness control constantly update strip.  JSON?
+#TODO Add multistrip vew page with x,y,length and angle only.
+#TODO Add colorpicker for strip color
+#TODO Add polygon implementor length, number of angles, angle degrees
+
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
-from app import db
+from app import db, socketio
 from app.forms import StripForm, ConfigForm, LoadConfig, SaveConfig
 from app.models import Strip, Configure
 from app.opencv import opencv_draw
@@ -9,6 +14,8 @@ from app.json_rw import write_json, read_json
 import subprocess
 from subprocess import Popen
 import os
+import math
+from flask_socketio import send, emit
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -187,3 +194,48 @@ def save():
     
     return render_template('save.html', title='save', saves=saves, form=form)
 
+@app.route('/drawstripstart/<strip_n>', methods=['GET', 'POST'])
+def drawstripstart(strip_n):
+    
+    return render_template('drawstripstart.html', title='drawstripstart', strip_n = strip_n)
+
+@socketio.on('start_point_rec')
+def start_point(data):
+    #print('received message: ')
+    #print(data)
+    strip_number = data[2]
+    strip = Strip.query.filter_by(strip_num=strip_number).first()
+    #print(strip.start_pos_x, strip.start_pos_y, strip.angle)
+    strip.start_pos_x = data[0]
+    strip.start_pos_y = data[1]
+    #print(strip.start_pos_x, strip.start_pos_y, strip.angle) 
+    db.session.add(strip)
+    db.session.commit()
+    strips = Strip.query.all()
+    opencv_draw(strips)
+    destination = '/drawstripstart/' + str(data[2])
+    emit('redirect', destination)
+    
+@app.route('/drawstripend/<strip_n>', methods=['GET', 'POST'])
+def drawstripend(strip_n):
+    
+    return render_template('drawstripend.html', title='drawstripend', strip_n = strip_n)
+
+@socketio.on('end_point_rec')
+def end_point(data):
+    #print('received message: ')
+    #print(data)
+    strip_number = data[2]
+    strip = Strip.query.filter_by(strip_num=strip_number).first()
+    length = round(math.sqrt(((data[0] - strip.start_pos_x) ** 2) + ((data[1] - strip.start_pos_y) ** 2)))
+    angle = round(math.degrees(math.atan2((data[1] - strip.start_pos_y), (data[0] - strip.start_pos_x))) * -1)
+    #print("length: " + str(length))
+    #print("angle:" + str(angle))
+    strip.length = length
+    strip.angle = angle
+    db.session.add(strip)
+    db.session.commit()
+    strips = Strip.query.all()
+    opencv_draw(strips)
+    destination = '/drawstripend/' + str(data[2])
+    emit('redirect', destination)

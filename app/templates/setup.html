@@ -7,21 +7,9 @@
   }
 </style>
 
+<script src="/static/javascript/setup.js" defer></script>
+
 <h1>Interp Strip Setup</h1>
-<script>
-  window.addEventListener('load', function(){
-      if (localStorage.pick) {
-          var sel = document.querySelector('#strip-selector');
-          sel.value = localStorage.pick;
-      }
-  });
-  
-  function getSelectValue(){
-      var sel = document.querySelector('#strip-selector');
-      localStorage.pick = sel.value;
-      location.replace('/setup/' + localStorage.pick);
-  }
-</script>
     <label for="strip-selector">Select a Strip:</label>
 	<select id="strip-selector" onchange = "getSelectValue();">
 	  {% for i in range(1,configure.num_strips+1) %}
@@ -29,9 +17,13 @@
 	  {% endfor %}
 	</select>
 	<div class="image">
-	  <img src="{{url_for('static', filename='display.png')}}" align="middle" width="672" height="378"/>
+	  <img src="{{url_for('static', filename='/images/display.png')}}" align="middle" width="672" height="378"/>
 	  <hr/>
 	  <a href="{{ url_for('running') }}">Run Program</a>
+	  <button id="drawstripstart">Select Start Point</button>
+	  <button id="drawstripend">Select End Point</button>
+	  <!--<input type="button" value="Open" id="drawstripButton" />-->
+
 	</div>
 	<form action="" id="strip-selector" method="post" novalidate>
         {{ form.hidden_tag() }}
@@ -120,5 +112,6 @@
             {% endfor %}
         </p>
         <p>{{ form.submit() }}</p>
-      </form>
+	</form>
+	<input type="color">
       {% endblock %}
