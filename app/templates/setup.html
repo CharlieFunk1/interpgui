@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block scripts %}
+{{ super() }}
+{{ colorpicker.loader() }}
+{{ colorpicker.picker(ids=["#line_color_hex"], color_format='hex') }}
+{% endblock %}
+{% block app_content %}
 <style>
   .image {
       float: right;
@@ -69,24 +74,10 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
-            {{ form.line_color_r.label }}<br>
-            {{ form.line_color_r(size=3) }}
-	    {% for error in form.line_color_r.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.line_color_g.label }}<br>
-            {{ form.line_color_g(size=3) }}
-	    {% for error in form.line_color_g.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.line_color_b.label }}<br>
-            {{ form.line_color_b(size=3) }}
-	    {% for error in form.line_color_b.errors %}
+	<p id='line-color-hex'>
+            {{ form.line_color_hex.label }}<br>
+            {{ form.line_color_hex(size=7) }}
+	    {% for error in form.line_color_hex.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
@@ -113,5 +104,4 @@
         </p>
         <p>{{ form.submit() }}</p>
 	</form>
-	<input type="color">
       {% endblock %}

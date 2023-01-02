@@ -2,16 +2,18 @@ import cv2
 import math
 from app import db
 from app.models import Strip, Configure
+from app.decimal_hex import decimal_to_hex, hex_to_decimal
 
 def opencv_draw(strips):
     image = cv2.imread('./app/static/images/resolutions.png')
     for strip in strips:
+        decimal_color = hex_to_decimal(strip.line_color_hex)
         i = 0
         strip_xy = set_strip(strip)
         while i < len(strip_xy):
             start = (strip_xy[i][0], strip_xy[i][1])
             end = (strip_xy[i][0], strip_xy[i][1])
-            cv2.line(image, start, end, (strip.line_color_b, strip.line_color_g, strip.line_color_r), 5)
+            cv2.line(image, start, end, (decimal_color[0], decimal_color[1], decimal_color[2]), 5)
             i += 1
     cv2.imwrite('./app/static/images/display.png', image)        
 

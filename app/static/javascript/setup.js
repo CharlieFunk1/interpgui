@@ -3,7 +3,7 @@ window.addEventListener('load', function(){
           var sel = document.querySelector('#strip-selector');
           sel.value = localStorage.pick;
       }
-  });
+});
 
   function getSelectValue(){
       var sel = document.querySelector('#strip-selector');
@@ -24,3 +24,4 @@ drawstripend.addEventListener('click', function(){
     var sel = document.querySelector('#strip-selector');
     location.replace('/drawstripend/' + sel.value);
 });
+

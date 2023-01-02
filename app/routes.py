@@ -1,7 +1,8 @@
 #TODO Make brightness control constantly update strip.  JSON?
 #TODO Add multistrip vew page with x,y,length and angle only.
-#TODO Add colorpicker for strip color
 #TODO Add polygon implementor length, number of angles, angle degrees
+#TODO Add New option to save/load
+#TODO add nudge feature for drawing strips using arrow keys 1px at a time
 
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
@@ -53,9 +54,7 @@ def setup():
                       start_pos_y = form.start_pos_y.data,
                       angle = form.angle.data,
                       length = form.length.data,
-                      line_color_r = form.line_color_r.data,
-                      line_color_g = form.line_color_g.data,
-                      line_color_b = form.line_color_b.data,
+                      line_color_hex = form.line_color_hex.data,
                       zig_zags = form.zig_zags.data,
                       zag_distance = form.zag_distance.data,
                       ip = form.ip.data)
@@ -90,9 +89,7 @@ def setup2(strip_number):
             start_pos_y = form.start_pos_y.data,
             angle = form.angle.data,
             length = form.length.data,
-            line_color_r = form.line_color_r.data,
-            line_color_g = form.line_color_g.data,
-            line_color_b = form.line_color_b.data,
+            line_color_hex = form.line_color_hex.data,
             zig_zags = form.zig_zags.data,
             zag_distance = form.zag_distance.data,
             ip = form.ip.data)
@@ -111,9 +108,7 @@ def setup2(strip_number):
             form.start_pos_y.data = strip.start_pos_y
             form.angle.data = strip.angle
             form.length.data = strip.length
-            form.line_color_r.data = strip.line_color_r
-            form.line_color_g.data = strip.line_color_g
-            form.line_color_b.data = strip.line_color_b
+            form.line_color_hex.data = strip.line_color_hex
             form.zig_zags.data = strip.zig_zags
             form.zag_distance.data = strip.zag_distance
             form.ip.data = strip.ip

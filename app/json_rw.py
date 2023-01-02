@@ -4,6 +4,7 @@ import subprocess
 from subprocess import Popen
 from app import db
 from app.models import Strip, Configure
+from app.decimal_hex import hex_to_decimal, decimal_to_hex
 
 def write_json(path):
     configure = Configure.query.get(1)
@@ -11,13 +12,14 @@ def write_json(path):
     i = 1
     while i <= configure.num_strips:
         strip = Strip.query.filter_by(strip_num=i).first()
+        decimal_color = hex_to_decimal(strip.line_color_hex)
         strip_dictionary ={
             "strip_num" : strip.strip_num,
             "num_pixels" : strip.num_pixels,
             "start_pos" : (strip.start_pos_x, strip.start_pos_y),
             "angle" : strip.angle,
             "length" : strip.length,
-            "line_color" : (strip.line_color_r, strip.line_color_g, strip.line_color_b),
+            "line_color" : (decimal_color[0], decimal_color[1], decimal_color[2]),
             "zig_zags" : strip.zig_zags,
             "zag_distance" : strip.zag_distance,
             "ip" : strip.ip
@@ -62,15 +64,14 @@ def read_json(path, config_name):
         db.session.commit()
 
         for strip in all_strips:
+            hex_color = decimal_to_hex(strip["line_color"])
             strip_add = Strip(strip_num = strip["strip_num"],
                               num_pixels = strip["num_pixels"],
                               start_pos_x = strip["start_pos"][0],
                               start_pos_y = strip["start_pos"][1],
                               angle = strip["angle"],
                               length = strip["length"],
-                              line_color_r = strip["line_color"][0],
-                              line_color_g = strip["line_color"][1],
-                              line_color_b = strip["line_color"][2],
+                              line_color_hex = hex_color,
                               zig_zags = strip["zig_zags"],
                               zag_distance = strip["zag_distance"],
                               ip = strip["ip"])

@@ -1,8 +1,8 @@
-"""first commit
+"""init
 
-Revision ID: 688489bc64b9
+Revision ID: 3ecbdfd50128
 Revises: 
-Create Date: 2022-07-10 14:11:10.610065
+Create Date: 2023-01-02 09:33:55.039863
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '688489bc64b9'
+revision = '3ecbdfd50128'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,9 +36,7 @@ def upgrade():
     sa.Column('start_pos_y', sa.Integer(), nullable=True),
     sa.Column('angle', sa.Integer(), nullable=True),
     sa.Column('length', sa.Integer(), nullable=True),
-    sa.Column('line_color_r', sa.Integer(), nullable=True),
-    sa.Column('line_color_g', sa.Integer(), nullable=True),
-    sa.Column('line_color_b', sa.Integer(), nullable=True),
+    sa.Column('line_color_hex', sa.String(length=7), nullable=True),
     sa.Column('zig_zags', sa.Integer(), nullable=True),
     sa.Column('zag_distance', sa.Integer(), nullable=True),
     sa.Column('ip', sa.String(length=15), nullable=True),
