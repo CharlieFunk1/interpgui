@@ -30,3 +30,44 @@ donedrawing.addEventListener('click', function(){
     var sel = document.querySelector('donedrawing');
     location.replace('/setup/' + strip_number);
 });
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38' && e.altKey == false) {
+        // up arrow
+	fetch('/nudge_up/url/' + strip_number + '/' + 10 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '38' && e.altKey == true) {
+	//ctrl + up arrow
+	fetch('/nudge_up/url/' + strip_number + '/' + 1 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '40' && e.altKey == false) {
+        // down arrow
+	fetch('/nudge_down/url/' + strip_number + '/' + 10 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '40' && e.altKey == true) {
+	//ctrl + down arrow
+	fetch('/nudge_down/url/' + strip_number + '/' + 1 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '37' && e.altKey == false) {
+        // left arrow
+	fetch('/nudge_left/url/' + strip_number + '/' + 10 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '37' && e.altKey == true) {
+	//ctrl + left arrow
+	fetch('/nudge_left/url/' + strip_number + '/' + 1 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '39' && e.altKey == false) {
+        // right arrow
+	fetch('/nudge_right/url/' + strip_number + '/' + 10 + '/' + "start").then(response => window.location = response.url);
+    }
+    else if (e.keyCode == '39' && e.altKey == true) {
+	//ctrl + right arrow
+	fetch('/nudge_right/url/' + strip_number + '/' + 1 + '/' + "start").then(response => window.location = response.url);
+    }
+
+}

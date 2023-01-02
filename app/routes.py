@@ -234,3 +234,71 @@ def end_point(data):
     opencv_draw(strips)
     destination = '/drawstripend/' + str(data[2])
     emit('redirect', destination)
+
+@app.route("/nudge_up/url/<strip_number>/<mult>/<from_where>")
+def nudge_up(strip_number, mult, from_where):
+    strip = Strip.query.filter_by(strip_num=strip_number).first()
+    if (from_where == "start"): 
+        old_value = strip.start_pos_y
+        new_value = old_value - int(mult)
+        strip.start_pos_y = new_value
+    elif (from_where == "end"):
+        old_value = strip.angle
+        new_value = old_value + int(mult)
+        strip.angle = new_value
+    db.session.add(strip)
+    db.session.commit()
+    strips = Strip.query.all()
+    opencv_draw(strips)
+    return redirect('/drawstrip' + from_where + '/' + strip_number)
+
+@app.route("/nudge_down/url/<strip_number>/<mult>/<from_where>")
+def nudge_down(strip_number, mult, from_where):
+    strip = Strip.query.filter_by(strip_num=strip_number).first()
+    if (from_where == "start"): 
+        old_value = strip.start_pos_y
+        new_value = old_value + int(mult)
+        strip.start_pos_y = new_value
+    elif (from_where == "end"):
+        old_value = strip.angle
+        new_value = old_value - int(mult)
+        strip.angle = new_value
+    db.session.add(strip)
+    db.session.commit()
+    strips = Strip.query.all()
+    opencv_draw(strips)
+    return redirect('/drawstrip' + from_where + '/' + strip_number)
+
+@app.route("/nudge_left/url/<strip_number>/<mult>/<from_where>")
+def nudge_left(strip_number, mult, from_where):
+    strip = Strip.query.filter_by(strip_num=strip_number).first()
+    if (from_where == "start"): 
+        old_value = strip.start_pos_x
+        new_value = old_value - int(mult)
+        strip.start_pos_x = new_value
+    elif (from_where == "end"):
+        old_value = strip.length
+        new_value = old_value - int(mult)
+        strip.length = new_value
+    db.session.add(strip)
+    db.session.commit()
+    strips = Strip.query.all()
+    opencv_draw(strips)
+    return redirect('/drawstrip' + from_where + '/' + strip_number)
+
+@app.route("/nudge_right/url/<strip_number>/<mult>/<from_where>")
+def nudge_right(strip_number, mult, from_where):
+    strip = Strip.query.filter_by(strip_num=strip_number).first()
+    if (from_where == "start"): 
+        old_value = strip.start_pos_x
+        new_value = old_value + int(mult)
+        strip.start_pos_x = new_value
+    elif (from_where == "end"):
+        old_value = strip.length
+        new_value = old_value + int(mult)
+        strip.length = new_value
+    db.session.add(strip)
+    db.session.commit()
+    strips = Strip.query.all()
+    opencv_draw(strips)
+    return redirect('/drawstrip' + from_where + '/' + strip_number)
