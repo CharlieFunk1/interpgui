@@ -1,8 +1,6 @@
 #TODO Make brightness control constantly update strip.  JSON?
 #TODO Add multistrip vew page with x,y,length and angle only.
 #TODO Add polygon implementor length, number of angles, angle degrees
-#TODO Add New option to save/load
-#TODO add nudge feature for drawing strips using arrow keys 1px at a time
 
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
@@ -188,6 +186,18 @@ def save():
         return redirect('/setup/1')
     
     return render_template('save.html', title='save', saves=saves, form=form)
+
+@app.route('/new', methods=['GET', 'POST'])
+def new():
+    strips = Strip.query.all()
+    config = Configure.query.all()
+    for strip in strips:
+        db.session.delete(strip)
+    for c in config:
+        db.session.delete(c)
+    db.session.commit()
+    return redirect('/')    
+ 
 
 @app.route('/drawstripstart/<strip_n>', methods=['GET', 'POST'])
 def drawstripstart(strip_n):
