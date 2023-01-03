@@ -46,6 +46,7 @@ def set_strip(strip):
     return strip_xy
 
 def set_strip_poly(strip):
+    num_angles_abs = abs(strip.num_angles)
     strip_xy = []
     i = 1
     j = 1
@@ -53,19 +54,26 @@ def set_strip_poly(strip):
     x_start = strip.start_pos_x
     y_start = strip.start_pos_y
     strip_xy.append((x_start, y_start))
-    while i <= strip.num_angles:
-        while j < (strip.num_pixels/strip.num_angles):
-            x = round((strip.length/(strip.num_pixels/strip.num_angles) * (j)) * (math.cos(math.radians(angle * -1))) + x_start)
-            y = round((strip.length/(strip.num_pixels/strip.num_angles) * (j)) * (math.sin(math.radians(angle * -1))) + y_start)
+    while i <= num_angles_abs:
+        while j < (strip.num_pixels/num_angles_abs):
+            x = round((strip.length/(strip.num_pixels/num_angles_abs) * (j)) * (math.cos(math.radians(angle * -1))) + x_start)
+            y = round((strip.length/(strip.num_pixels/num_angles_abs) * (j)) * (math.sin(math.radians(angle * -1))) + y_start)
             strip_xy.append((x, y))
             j += 1
         x_start = strip_xy[-1][0]
         y_start = strip_xy[-1][1]
-        if (angle + (angle * 2)) >= 360:
-            angle = angle + (360/strip.num_angles)
-            angle = angle - 360
+        if strip.num_angles < 0:
+            if (angle + (-1 * (angle * 2))) <= -360:
+                angle = angle - (360/num_angles_abs)
+                angle = angle + 360
+            else:
+                angle = angle - (360/num_angles_abs)
         else:
-            angle = angle + (360/strip.num_angles)
+            if (angle + (angle * 2)) >= 360:
+                angle = angle + (360/num_angles_abs)
+                angle = angle - 360
+            else:
+                angle = angle + (360/num_angles_abs)
         i += 1
         j = 1
     return strip_xy

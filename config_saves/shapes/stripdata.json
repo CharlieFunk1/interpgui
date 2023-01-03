@@ -1,13 +1,13 @@
 [
     {
         "strip_num": 1,
-        "num_pixels": 75,
+        "num_pixels": 150,
         "start_pos": [
-            300,
-            200
+            1222,
+            624
         ],
         "angle": 0,
-        "length": 600,
+        "length": 200,
         "line_color": [
             255,
             0,
@@ -15,6 +15,8 @@
         ],
         "zig_zags": 5,
         "zag_distance": 34,
+        "num_angles": -5,
+        "enable_poly": true,
         "ip": "192.168.1.122"
     },
     {
@@ -33,17 +35,19 @@
         ],
         "zig_zags": 5,
         "zag_distance": -34,
+        "num_angles": 3,
+        "enable_poly": true,
         "ip": "192.168.1.149"
     },
     {
         "strip_num": 3,
         "num_pixels": 150,
         "start_pos": [
-            300,
-            540
+            1222,
+            408
         ],
         "angle": 0,
-        "length": 600,
+        "length": 25,
         "line_color": [
             0,
             0,
@@ -51,6 +55,8 @@
         ],
         "zig_zags": 5,
         "zag_distance": 34,
+        "num_angles": 75,
+        "enable_poly": true,
         "ip": "192.168.1.140"
     }
 ]

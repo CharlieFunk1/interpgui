@@ -33,13 +33,6 @@
 	<form action="" id="strip-selector" method="post" novalidate>
         {{ form.hidden_tag() }}
 	<p>
-            {{ form.strip_num.label }}<br>
-            {{ form.strip_num(size=3) }}
-	    {% for error in form.strip_num.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
             {{ form.num_pixels.label }}<br>
             {{ form.num_pixels(size=3) }}
 	    {% for error in form.num_pixels.errors %}
@@ -81,6 +74,7 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+	<div id="mode-select">
         <p>
             {{ form.zig_zags.label }}<br>
             {{ form.zig_zags(size=3) }}
@@ -109,6 +103,7 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+	</div>
         <p>
             {{ form.ip.label }}<br>
             {{ form.ip(size=13) }}

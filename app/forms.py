@@ -13,7 +13,7 @@ class StripForm(FlaskForm):
     line_color_hex = StringField('Strip Color', validators=[DataRequired()])
     zig_zags = IntegerField('Number of Zig Zags (1 = None)', validators=[DataRequired()])
     zag_distance = IntegerField('Distance between Zig Zag lines (in Pixels)(Negative to Zag Other Direction)', validators=[DataRequired()])
-    num_angles = IntegerField('Number of angles in polygon', validators=[InputRequired(), NumberRange(min=0, max=None)])
+    num_angles = IntegerField('Number of angles in polygon(Negative to daw in other direction)', validators=[InputRequired()])
     enable_poly = BooleanField('Enable Polygon Mode', default=[False])
     ip = StringField('IP address of Strip', validators=[IPAddress(message="Value needs to be a valid IP Address")])
     submit = SubmitField('Submit Values')
