@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField
-from wtforms.validators import DataRequired, NumberRange, IPAddress
+from wtforms import StringField, IntegerField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, NumberRange, IPAddress, InputRequired
 from app.models import Strip, Configure
 
 class StripForm(FlaskForm):
@@ -13,6 +13,8 @@ class StripForm(FlaskForm):
     line_color_hex = StringField('Strip Color', validators=[DataRequired()])
     zig_zags = IntegerField('Number of Zig Zags (1 = None)', validators=[DataRequired()])
     zag_distance = IntegerField('Distance between Zig Zag lines (in Pixels)(Negative to Zag Other Direction)', validators=[DataRequired()])
+    num_angles = IntegerField('Number of angles in polygon', validators=[InputRequired(), NumberRange(min=0, max=None)])
+    enable_poly = BooleanField('Enable Polygon Mode', default=[False])
     ip = StringField('IP address of Strip', validators=[IPAddress(message="Value needs to be a valid IP Address")])
     submit = SubmitField('Submit Values')
     

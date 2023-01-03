@@ -22,6 +22,7 @@
       localStorage.pick = sel.value;
       location.replace('/setup/' + localStorage.pick);
   }
+
 </script>
       <form action="" id="strip-selector" method="post" novalidate>
           {{ form1.hidden_tag() }}
@@ -34,9 +35,9 @@
         </p>
           <p>{{ form1.submit() }}</p>
       </form>
-      <ul class='list'>
+      <select size="{{saves_number}}" id='load-list'>
 	{% for save in saves %}
-	<li>{{save}}</li>
+	<option value="{{save}}">{{save}}</option>
 	{% endfor %}
-      </ul>	
+      </select>	
       {% endblock %}

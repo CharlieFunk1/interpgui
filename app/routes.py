@@ -1,6 +1,7 @@
 #TODO Make brightness control constantly update strip.  JSON?
 #TODO Add multistrip vew page with x,y,length and angle only.
 #TODO Add polygon implementor length, number of angles, angle degrees
+#TODO Make load and save page have selectable files
 
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
@@ -55,6 +56,8 @@ def setup():
                       line_color_hex = form.line_color_hex.data,
                       zig_zags = form.zig_zags.data,
                       zag_distance = form.zag_distance.data,
+                      num_angles = form.num_angles.data,
+                      enable_poly = form.enable_poly.data,
                       ip = form.ip.data)
         db.session.add(strip)
         db.session.commit()
@@ -90,6 +93,8 @@ def setup2(strip_number):
             line_color_hex = form.line_color_hex.data,
             zig_zags = form.zig_zags.data,
             zag_distance = form.zag_distance.data,
+            num_angles = form.num_angles.data,
+            enable_poly = form.enable_poly.data,
             ip = form.ip.data)
 
         db.session.add(strip)
@@ -109,6 +114,8 @@ def setup2(strip_number):
             form.line_color_hex.data = strip.line_color_hex
             form.zig_zags.data = strip.zig_zags
             form.zag_distance.data = strip.zag_distance
+            form.num_angles.data = strip.num_angles
+            form.enable_poly.data = strip.enable_poly
             form.ip.data = strip.ip
     except:
         print("No data present in strip")
@@ -169,12 +176,12 @@ def running():
 def load():
     form1 = LoadConfig()
     saves = query_saves()
-
+    saves_number = len(saves)
     if form1.validate_on_submit():
         load_config(form1.load_file.data)
         return redirect('/setup/1')
     
-    return render_template('load.html', title='load', saves=saves, form1=form1)
+    return render_template('load.html', title='load', saves=saves, form1=form1, saves_number=saves_number)
 
 @app.route('/save', methods=['GET', 'POST'])
 def save():

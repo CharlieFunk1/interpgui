@@ -24,7 +24,7 @@
 	<div class="image">
 	  <img src="{{url_for('static', filename='/images/display.png')}}" align="middle" width="672" height="378"/>
 	  <hr/>
-	  <a href="{{ url_for('running') }}">Run Program</a>
+	  <button href="{{ url_for('running') }}">Run Program</button>
 	  <button id="drawstripstart">Select Start Point</button>
 	  <button id="drawstripend">Select End Point</button>
 	  <!--<input type="button" value="Open" id="drawstripButton" />-->
@@ -92,6 +92,20 @@
             {{ form.zag_distance.label }}<br>
             {{ form.zag_distance(size=4) }}
 	    {% for error in form.zag_distance.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.num_angles.label }}<br>
+            {{ form.num_angles(size=3) }}
+	    {% for error in form.num_angles.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.enable_poly.label }}<br>
+            {{ form.enable_poly(size=4) }}
+	    {% for error in form.enable_poly.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>

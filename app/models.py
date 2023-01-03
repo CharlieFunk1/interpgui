@@ -11,6 +11,8 @@ class Strip(db.Model):
     line_color_hex = db.Column(db.String(7))
     zig_zags = db.Column(db.Integer)
     zag_distance = db.Column(db.Integer)
+    num_angles = db.Column(db.Integer)
+    enable_poly = db.Column(db.Boolean)
     ip = db.Column(db.String(15), index=True, unique=True)
 
     def __repr__(self):
