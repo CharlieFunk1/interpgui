@@ -22,6 +22,8 @@ def write_json(path):
             "line_color" : (decimal_color[0], decimal_color[1], decimal_color[2]),
             "zig_zags" : strip.zig_zags,
             "zag_distance" : strip.zag_distance,
+            "num_angles" : strip.num_angles,
+            "enable_poly" : strip.enable_poly,
             "ip" : strip.ip
         }
         diclist.append(strip_dictionary)
@@ -74,6 +76,8 @@ def read_json(path, config_name):
                               line_color_hex = hex_color,
                               zig_zags = strip["zig_zags"],
                               zag_distance = strip["zag_distance"],
+                              num_angles = strip["num_angles"],
+                              enable_poly = strip["enable_poly"],
                               ip = strip["ip"])
         
             db.session.add(strip_add)

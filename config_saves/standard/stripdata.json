@@ -15,6 +15,8 @@
         ],
         "zig_zags": 5,
         "zag_distance": 34,
+        "num_angles": 0,
+        "enable_poly": false,
         "ip": "192.168.1.122"
     },
     {
@@ -33,6 +35,8 @@
         ],
         "zig_zags": 5,
         "zag_distance": -34,
+        "num_angles": 0,
+        "enable_poly": false,
         "ip": "192.168.1.149"
     },
     {
@@ -51,6 +55,8 @@
         ],
         "zig_zags": 5,
         "zag_distance": 34,
+        "num_angles": 0,
+        "enable_poly": false,
         "ip": "192.168.1.140"
     }
 ]

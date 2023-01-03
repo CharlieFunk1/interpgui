@@ -1,6 +1,5 @@
 #TODO Make brightness control constantly update strip.  JSON?
 #TODO Add multistrip vew page with x,y,length and angle only.
-#TODO Add polygon implementor length, number of angles, angle degrees
 #TODO Make load and save page have selectable files
 
 from flask import render_template, flash, redirect, url_for, request, make_response
