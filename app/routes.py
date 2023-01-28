@@ -1,6 +1,7 @@
 #TODO Make brightness control constantly update strip.  JSON?
 #TODO Add multistrip vew page with x,y,length and angle only.
 #TODO Make load and save page have selectable files
+#TODO make save recognice if file exists and popup to ask to replace
 
 from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
@@ -28,10 +29,11 @@ def slash():
     except:
         print("No data in table.  Adding basic setup info")
         configure = Configure(num_strips = 1,
-                              rust_path = "/",
+                              rust_path = "/home/matrix/rust/interprust/",
                               brightness = 100,
                               mode = 1,
-                              video_stream_ip = "0.0.0.0")
+                              video_stream_ip = "0.0.0.0",
+                              host_ip = request.headers.get('Host'))
         db.session.add(configure)
         db.session.commit()
 
@@ -75,6 +77,7 @@ def setup2(strip_number):
     strips = Strip.query.all()
     opencv_draw(strips)
 
+    print(form.validate_on_submit())
     if form.validate_on_submit():
         try:
             strip = Strip.query.filter_by(strip_num=form.strip_num.data).first()
@@ -128,7 +131,8 @@ def config():
     config = Configure.query.get(1)
     configure = Configure.query.all()
     num_strips = config.num_strips
-        
+    (host_ip_temp, _) = request.headers.get('Host').split(':')
+   
     if form1.validate_on_submit():
         for c in configure:
             db.session.delete(c)
@@ -137,18 +141,22 @@ def config():
                               rust_path = form1.rust_path.data,
                               brightness = form1.brightness.data,
                               mode = form1.mode.data,
+                              host_ip = host_ip_temp,
                               video_stream_ip = form1.video_stream_ip.data)
+                               
+        
         db.session.add(configure)
         db.session.commit()
-        flash('Config Data Submitted.  Set {} strips'.format(
-            form1.num_strips.data))
+        flash('Config Data Submitted.')
         return redirect(url_for('config'))
+   
     try:
         if str(num_strips).isdigit() == True:
             form1.num_strips.data = config.num_strips
             form1.rust_path.data = config.rust_path
             form1.brightness.data = config.brightness
             form1.mode.data = config.mode
+            form1.host_ip.data = config.host_ip
             form1.video_stream_ip.data = config.video_stream_ip
     except:
         print("No data present in config")
@@ -168,7 +176,7 @@ def running():
         if request.form.get("close_program"):
             done = os.system("killall interprust")
             return redirect('/setup/1')
-      
+          
     return render_template('running.html', title='running')
 
 @app.route('/load', methods=['GET', 'POST'])

@@ -1,23 +1,28 @@
 import cv2
 import math
 from app import db
+from app.json_rw import write_strip_xy_json
 from app.models import Strip, Configure
 from app.decimal_hex import decimal_to_hex, hex_to_decimal
 
 def opencv_draw(strips):
     image = cv2.imread('./app/static/images/resolutions.png')
+    all_strip_xy = []
     for strip in strips:
         decimal_color = hex_to_decimal(strip.line_color_hex)
         i = 0
         if strip.enable_poly == False:
             strip_xy = set_strip(strip)
+            all_strip_xy.append(strip_xy)
         else:
             strip_xy = set_strip_poly(strip)
+            all_strip_xy.append(strip_xy)
         while i < len(strip_xy):
             start = (strip_xy[i][0], strip_xy[i][1])
             end = (strip_xy[i][0], strip_xy[i][1])
             cv2.line(image, start, end, (decimal_color[0], decimal_color[1], decimal_color[2]), 5)
             i += 1
+    write_strip_xy_json(all_strip_xy)
     cv2.imwrite('./app/static/images/display.png', image)        
 
 

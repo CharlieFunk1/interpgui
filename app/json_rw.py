@@ -19,7 +19,7 @@ def write_json(path):
             "start_pos" : (strip.start_pos_x, strip.start_pos_y),
             "angle" : strip.angle,
             "length" : strip.length,
-            "line_color" : (decimal_color[0], decimal_color[1], decimal_color[2]),
+            "line_color" : (decimal_color[2], decimal_color[1], decimal_color[0]),
             "zig_zags" : strip.zig_zags,
             "zag_distance" : strip.zag_distance,
             "num_angles" : strip.num_angles,
@@ -34,7 +34,8 @@ def write_json(path):
         "rust_path" : configure.rust_path,
         "brightness" : configure.brightness,
         "mode" : configure.mode,
-        "video_stream_ip" : configure.video_stream_ip
+        "video_stream_ip" : configure.video_stream_ip,
+        "host_ip" : configure.host_ip
     }
     config_json_object = json.dumps(config_dictionary, indent = 4)
     strip_json_object = json.dumps(diclist, indent = 4)
@@ -43,7 +44,11 @@ def write_json(path):
     with open(path + "configdata.json", "w") as outfile:
         outfile.write(config_json_object)
 
-
+def write_strip_xy_json(all_strip_xy):
+    json_xy = json.dumps(all_strip_xy)
+    with open("/home/matrix/rust/interprust/strips-xy.json", "w") as outfile:
+        outfile.write(json_xy)
+    
         
 def read_json(path, config_name):
     if config_name != None:
@@ -86,7 +91,8 @@ def read_json(path, config_name):
                                rust_path = configuration["rust_path"],
                                brightness = configuration["brightness"],
                                mode = configuration["mode"],
-                               video_stream_ip = configuration["video_stream_ip"])
+                               video_stream_ip = configuration["video_stream_ip"],
+                               host_ip = configuration["host_ip"])
         db.session.add(config_add)
         db.session.commit()
     

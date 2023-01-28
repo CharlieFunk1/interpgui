@@ -33,14 +33,19 @@
             {% endfor %}
         </p>
 	<p>
+            {{ form1.host_ip.label }}<br>
+            {{ form1.host_ip(size=15) }}
+	    {% for error in form1.host_ip.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+	<p>
             {{ form1.video_stream_ip.label }}<br>
             {{ form1.video_stream_ip(size=15) }}
 	    {% for error in form1.video_stream_ip.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-
-
         <p>{{ form1.submit() }}</p>
       </form>
       

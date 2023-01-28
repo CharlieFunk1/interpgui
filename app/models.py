@@ -14,6 +14,7 @@ class Strip(db.Model):
     num_angles = db.Column(db.Integer)
     enable_poly = db.Column(db.Boolean)
     ip = db.Column(db.String(15), index=True, unique=True)
+    
 
     def __repr__(self):
         return '<Strip Number {}>'.format(self.strip_num)
@@ -25,4 +26,5 @@ class Configure(db.Model):
     brightness = db.Column(db.Integer)
     mode = db.Column(db.Integer)
     video_stream_ip = db.Column(db.String)
+    host_ip = db.Column(db.String)
     
